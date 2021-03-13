@@ -8,19 +8,23 @@
         <div class="header">Edit Book</div>
         <div class="body">
             <#if book??>
-                <div class="editCipher">
+                <form method="post" class="editCipherForm">
                     <input type="submit" name="action" value="editCipher">
                     <input id="cipher" name="cipher" value=""/>
-                </div>
-                    <#if book.user??>
-                         <input type="submit" name="action" value="pickUpBook" onclick="pickUpBook(this)">
-                    <#else>
-                        <div class="giveOutBook">
-                            <input type="submit" name="action" value="giveOutBook">
-                            <input id="userId" name="userId" value=""/>
-                        </div>
-                         <input type="submit" name="action" value="deleteBook" onclick="deleteBook(this)">
-                    </#if>
+                </form>
+                <#if book.user??>
+                    <form method="post"  class="pickUpBookForm">
+                        <input type="submit" name="action" value="pickUpBook" onclick="pickUpBook(this)">
+                    </form>
+                <#else>
+                    <form method="post" class="giveOutBookForm">
+                        <input type="submit" name="action" value="giveOutBook">
+                        <input id="userId" name="userId" value=""/>
+                    </form>
+                    <form method="post" class="deleteBookForm">
+                        <input type="submit" name="action" value="deleteBook" onclick="deleteBook(this)">
+                    </form>
+                </#if>
             <#else>
                 <form method="post" action="">
                     <input type="hidden" name="action" value="editBook"/>
@@ -42,11 +46,19 @@
     </div>
     <script>
         $(function () {
-            $(".enter form").submit(function () {
-                const login = $(this).find("input[name='login']").val();
-                const password = $(this).find("input[name='password']").val();
-                const $error = $(this).find(".error");
-
+            $("form.editCipherForm").submit(function () {
+                alert("editCipherForm");
+                return false;
+            });
+        }),
+        $(function () {
+            $("form.giveOutBookForm").submit(function () {
+                alert("giveOutBookForm");
+                return false;
+            });
+        }),
+        $(function () {
+            $("form.pickUpBookForm").submit(function () {
                 ajax({
                     action: "enter",
                     login: login,
@@ -56,7 +68,18 @@
                         $error.text(response["error"]);
                     }
                 });
-
+                return false;
+            });
+        }),
+        $(function () {
+            $("form.deleteBookForm").submit(function () {
+                alert("ok");
+                ajax({
+                    method: "POST",
+                    dataType: "json",
+                    url:  "editBook/deleteBookForm"
+                }, function (response) {
+                });
                 return false;
             });
         })

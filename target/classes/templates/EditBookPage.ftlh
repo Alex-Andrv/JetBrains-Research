@@ -8,19 +8,23 @@
         <div class="header">Edit Book</div>
         <div class="body">
             <#if book??>
-                <form onsubmit="editCipher(this); return false">
+                <form method="post" class="editCipherForm">
                     <input type="submit" name="action" value="editCipher">
                     <input id="cipher" name="cipher" value=""/>
                 </form>
-                    <#if book.user??>
-                         <input type="submit" name="action" value="pickUpBook" onclick="pickUpBook(this)">
-                    <#else>
-                        <form onsubmit="giveOutBook(this); return false">
-                            <input type="submit" name="action" value="giveOutBook">
-                            <input id="userId" name="userId" value=""/>
-                        </form>
-                         <input type="submit" name="action" value="deleteBook" onclick="deleteBook(this)">
-                    </#if>
+                <#if book.user??>
+                    <form method="post"  class="pickUpBookForm">
+                        <input type="submit" name="action" value="pickUpBook" onclick="pickUpBook(this)">
+                    </form>
+                <#else>
+                    <form method="post" class="giveOutBookForm">
+                        <input type="submit" name="action" value="giveOutBook">
+                        <input id="userId" name="userId" value=""/>
+                    </form>
+                    <form method="post" class="deleteBookForm">
+                        <input type="submit" name="action" value="deleteBook" onclick="deleteBook(this)">
+                    </form>
+                </#if>
             <#else>
                 <form method="post" action="">
                     <input type="hidden" name="action" value="editBook"/>
@@ -40,29 +44,44 @@
             </#if>
         </div>
     </div>
-    <script type="text/javascript">
-        function helpSend(url, json) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST",  location.href + url, true);
-            xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-            xhr.send(json);
-        }
-        
-        function editCipher(form) {
-            alert(form);
-            return false;
-          //  helpSend("/editCipher", JSON.stringify({cipher: }));
-        }
-        function pickUpBook(button) {
-            helpSend("/pickUpBook", JSON.stringify({}));
-        }
-        function giveOutBook(form) {
-            console.log(this);
-            return false;
-        }
-        function deleteBook(button) {
-            helpSend("/deleteBook", JSON.stringify({}));
-        }
-
+    <script>
+        $(function () {
+            $("form.editCipherForm").submit(function () {
+                alert("editCipherForm");
+                return false;
+            });
+        }),
+        $(function () {
+            $("form.giveOutBookForm").submit(function () {
+                alert("giveOutBookForm");
+                return false;
+            });
+        }),
+        $(function () {
+            $("form.pickUpBookForm").submit(function () {
+                ajax({
+                    action: "enter",
+                    login: login,
+                    password: password
+                }, function (response) {
+                    if (response["error"]) {
+                        $error.text(response["error"]);
+                    }
+                });
+                return false;
+            });
+        }),
+        $(function () {
+            $("form.deleteBookForm").submit(function () {
+                alert("ok");
+                ajax({
+                    method: "POST",
+                    dataType: "json",
+                    url:  "editBook/deleteBookForm"
+                }, function (response) {
+                });
+                return false;
+            });
+        })
     </script>
 </@c.page>

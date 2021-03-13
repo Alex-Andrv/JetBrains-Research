@@ -14,6 +14,7 @@
         <link rel="stylesheet" type="text/css" href="<@spring.url '/css/datatable.css'/>">
         <link rel="stylesheet" type="text/css" href="<@spring.url '/css/article.css'/>">
         <script src="<@spring.url '/js/jquery-3.4.1.min.js'/>"></script>
+        <script src="<@spring.url '/js/app.js'/>"></script>
         <script src="<@spring.url '/js/notify.js'/>"></script>
     </head>
     <body>
