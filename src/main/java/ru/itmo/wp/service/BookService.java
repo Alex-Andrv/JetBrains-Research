@@ -21,6 +21,10 @@ public class BookService {
         return book;
     }
 
+    public void updataCipher(long cipher, long oldCipher) {
+        bookRepository.updateBookCipher(cipher, oldCipher);
+    }
+
 
 
     public void delete(Book book) {

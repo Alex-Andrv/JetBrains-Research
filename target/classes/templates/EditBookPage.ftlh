@@ -14,7 +14,7 @@
                 </form>
                 <#if book.user??>
                     <form method="post"  class="pickUpBookForm">
-                        <input type="submit" name="action" value="pickUpBook" onclick="pickUpBook(this)">
+                        <input type="submit" name="action" value="pickUpBook">
                     </form>
                 <#else>
                     <form method="post" class="giveOutBookForm">
@@ -22,7 +22,7 @@
                         <input id="userId" name="userId" value=""/>
                     </form>
                     <form method="post" class="deleteBookForm">
-                        <input type="submit" name="action" value="deleteBook" onclick="deleteBook(this)">
+                        <input type="submit" name="action" value="deleteBook">
                     </form>
                 </#if>
             <#else>
@@ -47,39 +47,53 @@
     <script>
         $(function () {
             $("form.editCipherForm").submit(function () {
-                alert("editCipherForm");
+                const cipher = $(this).find("input[name='cipher']").val();
+                $.ajax({
+                    dataType: "json",
+                    url: "/editBook/editCipher",
+                    data: {
+                        cipher: cipher
+                    },
+                    type: "POST"
+                }).done( document.location.href = "http://localhost:8080/");
                 return false;
             });
         }),
         $(function () {
             $("form.giveOutBookForm").submit(function () {
-                alert("giveOutBookForm");
+                const userId = $(this).find("input[name='userId']").val();
+                $.ajax({
+                    dataType: "json",
+                    url: "/editBook/giveOutBook",
+                    data: {
+                        userId: userId
+                    },
+                    type: "POST",
+                }).done( document.location.href = "http://localhost:8080/");
                 return false;
             });
         }),
         $(function () {
             $("form.pickUpBookForm").submit(function () {
-                ajax({
-                    action: "enter",
-                    login: login,
-                    password: password
-                }, function (response) {
-                    if (response["error"]) {
-                        $error.text(response["error"]);
-                    }
-                });
+                $.ajax({
+                    dataType: "json",
+                    url: "/editBook/pickUpBook",
+                    data: {
+                    },
+                    type: "POST"
+                }).done( document.location.href = "http://localhost:8080/");
                 return false;
             });
         }),
         $(function () {
             $("form.deleteBookForm").submit(function () {
-                alert("ok");
-                ajax({
-                    method: "POST",
+                $.ajax({
                     dataType: "json",
-                    url:  "editBook/deleteBookForm"
-                }, function (response) {
-                });
+                    url: "/editBook/deleteBook",
+                    data: {
+                    },
+                    type: "POST"
+                }).done( document.location.href = "http://localhost:8080/");
                 return false;
             });
         })

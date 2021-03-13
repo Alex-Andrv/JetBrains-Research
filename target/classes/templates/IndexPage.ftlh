@@ -11,6 +11,7 @@
                 <th>Name</th>
                 <th>Author</th>
                 <th>Create</th>
+                <th>Owner</th>
             </tr>
             </thead>
             <tbody>
@@ -27,6 +28,7 @@
                         <td class="Name">${book.name}</td>
                         <td class="Author">${book.author}</td>
                         <td class="Create">${book.creationTime}</td>
+                        <td class="Owner"><#if book.user??>${book.user.id}<#else>free</#if></td>
                     </tr>
                 </#list>
             </#if>
