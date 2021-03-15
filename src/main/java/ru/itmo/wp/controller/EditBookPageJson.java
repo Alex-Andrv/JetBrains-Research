@@ -34,10 +34,13 @@ public class EditBookPageJson extends Page {
     @PostMapping("/editBook/deleteBook")
     public Map deleteBook(HttpSession httpSession, Model model) {
         Book book = (Book)model.getAttribute("book");
-        if (book != null)
+        if (book != null) {
             bookService.delete(book);
+            putMessage(httpSession, "The book delete");
+        } else {
+            putMessage(httpSession, "Book was not found");
+        }
         unsetBook(httpSession);
-        putMessage(httpSession, "The book delete");
         return Map.of("status","302", "location", "/");
     }
 
@@ -47,9 +50,11 @@ public class EditBookPageJson extends Page {
         if (book != null) {
             book.setUser(null);
             bookService.addBook(book);
+            putMessage(httpSession, "The book is free");
+        } else {
+            putMessage(httpSession, "Book was not found");
         }
         unsetBook(httpSession);
-        putMessage(httpSession, "The book is free");
         return Map.of("status","302", "location", "/");
     }
 
@@ -61,8 +66,9 @@ public class EditBookPageJson extends Page {
                 bookService.updataCipher(cipher, book.getCipher());
                 putMessage(httpSession, "The book with new cipher");
             }
-            else
+            else {
                 putMessage(httpSession, "The book with this cipher is exists");
+            }
         }
         unsetBook(httpSession);
         return Map.of("status","302", "location", "/");
@@ -73,10 +79,17 @@ public class EditBookPageJson extends Page {
     public Map giveOutBook(@RequestParam Long userId, Long cipher, HttpSession httpSession, Model model) {
         Book book = (Book)model.getAttribute("book");
         if (book != null) {
-            book.setUser(userService.findById(userId));
-            bookService.addBook(book);
+            User user = userService.findById(userId);
+            if (user != null) {
+                book.setUser(user);
+                bookService.addBook(book);
+                putMessage(httpSession, "The book is not free");
+            } else {
+                putMessage(httpSession, "User was not found");
+            }
+        } else {
+            putMessage(httpSession, "Book was not found");
         }
-        putMessage(httpSession, "The book is not free");
         unsetBook(httpSession);
         return Map.of("status","302", "location", "/");
     }
