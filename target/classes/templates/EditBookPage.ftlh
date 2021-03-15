@@ -54,8 +54,13 @@
                     data: {
                         cipher: cipher
                     },
-                    type: "POST"
-                }).done( document.location.href = "http://localhost:8080/");
+                    type: "POST",
+                    success: function (data ){
+                        if (data.status == 302 ) {
+                            location.href = data.location;
+                        }
+                    }
+                });
                 return false;
             });
         }),
@@ -69,7 +74,13 @@
                         userId: userId
                     },
                     type: "POST",
-                }).done( document.location.href = "http://localhost:8080/");
+                    success: function (data ){
+                        if (data.status = 302 ) {
+                            Location. href = data. location;
+                        }
+                    }
+
+                })
                 return false;
             });
         }),
@@ -80,8 +91,13 @@
                     url: "/editBook/pickUpBook",
                     data: {
                     },
-                    type: "POST"
-                }).done( document.location.href = "http://localhost:8080/");
+                    type: "POST",
+                    success: function (data ){
+                        if (data.status = 302 ) {
+                            Location. href = data. location;
+                        }
+                    }
+                })
                 return false;
             });
         }),
@@ -92,8 +108,13 @@
                     url: "/editBook/deleteBook",
                     data: {
                     },
-                    type: "POST"
-                }).done( document.location.href = "http://localhost:8080/");
+                    type: "POST",
+                    success: function (data ){
+                        if (data.status = 302 ) {
+                            Location. href = data. location;
+                        }
+                    }
+                })
                 return false;
             });
         })
